@@ -34,7 +34,7 @@ If Rye is not part of your workflow, you can alternatively install the necessary
 The simulation can be customized through various parameters defined in main.ipynb. Adjust these parameters to explore different predator-prey dynamics and ecological conditions.
 
 ## License
-This project is licensed under the MIT License.
+This project is licensed under the Apache-2.0 license.
 
 ## Acknowledgments
 - [Mesa: An Agent-Based Modeling Framework](https://pdfs.semanticscholar.org/28a1/6e1b01b5897bde0e6fc676eacbc73d179ad6.pdf)
