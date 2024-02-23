@@ -37,6 +37,6 @@ The simulation can be customized through various parameters defined in main.ipyn
 This project is licensed under the MIT License.
 
 ## Acknowledgments
-- [Introduction to Agent-Based Modeling (PDF)](https://pdfs.semanticscholar.org/28a1/6e1b01b5897bde0e6fc676eacbc73d179ad6.pdf)
+- [Mesa: An Agent-Based Modeling Framework](https://pdfs.semanticscholar.org/28a1/6e1b01b5897bde0e6fc676eacbc73d179ad6.pdf)
 - [Agent-Based Models with Python: An Introduction to Mesa](https://www.complexityexplorer.org/courses/172-agent-based-models-with-python-an-introduction-to-mesa)
 - [Creating a Simple Predator-Prey Model with Mesa: A Python Simulation Library](https://medium.com/@ulriktpedersen/creating-a-simple-predator-prey-model-with-mesa-a-python-simulation-library-4835f29791ae)
