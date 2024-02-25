@@ -7,6 +7,7 @@ https://github.com/MySweetEden/predator_prey/assets/58873594/f24d6c3e-50e9-4478-
 ## Features
 Agent-Based Modeling: Leverages the Mesa library to create complex predator-prey interactions within a simulated ecosystem.  
 Dynamic Visualization: Utilizes Plotly to provide insightful visualizations of the simulation process, allowing for real-time observation of agent behaviors and population changes.  
+Customizable Parameters: Offers the ability to adjust various simulation parameters to explore different ecological scenarios and outcomes.
 
 ## Getting Started
 ### Prerequisites
