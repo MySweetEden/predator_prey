@@ -8,6 +8,7 @@ authors = [
 dependencies = [
     "mesa>=2.1.5",
     "plotly>=5.19.0",
+    "streamlit>=1.31.1",
 ]
 readme = "README.md"
 requires-python = ">= 3.8"
