@@ -2,14 +2,22 @@
 ## Overview
 This project is a Python-based multi-agent simulation of predator-prey dynamics, utilizing the Mesa library for the agent-based modeling framework and Plotly for visualizing the agents' processes throughout the simulation. The focus is on exploring the interactions between predators and prey within a simulated environment, examining patterns such as population dynamics, behavior changes, and the impact of various environmental factors.  
 
+**Experience it firsthand through interactive GUI.** Adjust parameters in real-time and witness the complex ecosystem adapt and evolve:
+
+[Predator-Prey Simulation](https://predatorprey-g8tdmsixgl25qijfzn5urm.streamlit.app/)
+
+## Sneak Peek
+Get a glimpse of what awaits you in the simulation with movie and screenshot:
+
 https://github.com/MySweetEden/predator_prey/assets/58873594/a82dbecc-87be-43bf-b49f-516688410201
 
 ![Population_transition_graph](https://github.com/MySweetEden/predator_prey/assets/58873594/0d4a8b8c-b671-4659-9a14-e13780bbf128)
 
-## Features
+## Key Features
 Agent-Based Modeling: Leverages the Mesa library to create complex predator-prey interactions within a simulated ecosystem.  
 Dynamic Visualization: Utilizes Plotly to provide insightful visualizations of the simulation process, allowing for real-time observation of agent behaviors and population changes.  
 Customizable Parameters: Offers the ability to adjust various simulation parameters to explore different ecological scenarios and outcomes.
+Interactive GUI: Fine-tune simulation parameters on-the-fly and explore different ecological scenarios.
 
 ## Getting Started
 ### Prerequisites
@@ -29,12 +37,15 @@ If Rye is not part of your workflow, you can alternatively install the necessary
 
 ### Running the Simulation
 ```
-# To run the simulation, execute the following jupyter notebook.
+# To run the simulation, execute the following py file.
+streamlit run ./src/predator_prey/app.py
+
+# Or, execute the following jupyter notebook.
 ./src/predator_prey/main.ipynb
 ```
 
 ## Usage
-The simulation can be customized through various parameters defined in main.ipynb. Adjust these parameters to explore different predator-prey dynamics and ecological conditions.
+The simulation can be customized through various parameters defined in app.py or main.ipynb. Adjust these parameters to explore different predator-prey dynamics and ecological conditions.
 
 ## License
 This project is licensed under the Apache-2.0 license.
