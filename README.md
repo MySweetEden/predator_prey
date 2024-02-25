@@ -2,7 +2,9 @@
 ## Overview
 This project is a Python-based multi-agent simulation of predator-prey dynamics, utilizing the Mesa library for the agent-based modeling framework and Plotly for visualizing the agents' processes throughout the simulation. The focus is on exploring the interactions between predators and prey within a simulated environment, examining patterns such as population dynamics, behavior changes, and the impact of various environmental factors.  
 
-https://github.com/MySweetEden/predator_prey/assets/58873594/f24d6c3e-50e9-4478-aca6-2b22fa64bb04
+https://github.com/MySweetEden/predator_prey/assets/58873594/a82dbecc-87be-43bf-b49f-516688410201
+
+![Population_transition_graph](https://github.com/MySweetEden/predator_prey/assets/58873594/0d4a8b8c-b671-4659-9a14-e13780bbf128)
 
 ## Features
 Agent-Based Modeling: Leverages the Mesa library to create complex predator-prey interactions within a simulated ecosystem.  
