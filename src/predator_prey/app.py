@@ -173,8 +173,6 @@ class PredatorPrey(Model):
                 dtick=1,
             )
         )
-        # fig.show()
-        # fig.write_html("./mas.html")
         return fig
 
     def plot_agent_population(self):
@@ -190,7 +188,6 @@ class PredatorPrey(Model):
             width=800, height=400,
             xaxis_range = [0,STEPS]
         )
-        # fig.show()
         return fig
 
     def step(self):
@@ -199,29 +196,17 @@ class PredatorPrey(Model):
 
 st.title("Predator-Prey Simulation")
 
-WIDTH = 10
-HEIGHT = 10
-STEPS = 100
-NUM_RABBITS = 10
-NUM_FOXES = 10
-REPRODUCE_RATIO_RABBITS = 0.1
-REPRODUCE_RATIO_FOXES = 0.05
-ENERGY_INIT_FOXES = 10
-ENERGY_DECREASE_FOXES = 1
-ENERGY_RECOVER_FOXES = 10
-RANDOM_SEED = 0
-
-WIDTH = int(st.sidebar.text_input('WIDTH (int)', 10))
-HEIGHT = int(st.sidebar.text_input('HEIGHT (int)', 10))
-STEPS = int(st.sidebar.text_input('STEPS (int)', 100))
-NUM_RABBITS = int(st.sidebar.text_input('NUM_RABBITS (int)', 10))
-NUM_FOXES = int(st.sidebar.text_input('NUM_FOXES (int)', 10))
-REPRODUCE_RATIO_RABBITS = float(st.sidebar.text_input('REPRODUCE_RATIO_RABBITS (float)', 0.1))
-REPRODUCE_RATIO_FOXES = float(st.sidebar.text_input('REPRODUCE_RATIO_FOXES (float)', 0.05))
-ENERGY_INIT_FOXES = int(st.sidebar.text_input('ENERGY_INIT_FOXES (int)', 10))
-ENERGY_DECREASE_FOXES = int(st.sidebar.text_input('ENERGY_DECREASE_FOXES (int)', 1))
-ENERGY_RECOVER_FOXES = int(st.sidebar.text_input('ENERGY_RECOVER_FOXES (int)', 10))
-RANDOM_SEED = int(st.sidebar.text_input('RANDOM_SEED (int)', 1))
+WIDTH = int(st.sidebar.number_input('WIDTH (int)', value=10))
+HEIGHT = int(st.sidebar.number_input('HEIGHT (int)', value=10))
+STEPS = int(st.sidebar.number_input('STEPS (int)', value=100))
+NUM_RABBITS = int(st.sidebar.number_input('NUM_RABBITS (int)', value=10))
+NUM_FOXES = int(st.sidebar.number_input('NUM_FOXES (int)', value=10))
+REPRODUCE_RATIO_RABBITS = float(st.sidebar.number_input('REPRODUCE_RATIO_RABBITS (float)', value=0.1))
+REPRODUCE_RATIO_FOXES = float(st.sidebar.number_input('REPRODUCE_RATIO_FOXES (float)', value=0.05))
+ENERGY_INIT_FOXES = int(st.sidebar.number_input('ENERGY_INIT_FOXES (int)', value=10))
+ENERGY_DECREASE_FOXES = int(st.sidebar.number_input('ENERGY_DECREASE_FOXES (int)', value=1))
+ENERGY_RECOVER_FOXES = int(st.sidebar.number_input('ENERGY_RECOVER_FOXES (int)', value=10))
+RANDOM_SEED = int(st.sidebar.number_input('RANDOM_SEED (int)', value=1))
 
 random.seed(RANDOM_SEED)
 
