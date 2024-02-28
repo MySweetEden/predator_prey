@@ -1,3 +1,4 @@
+from collections import Counter
 from mesa import Agent, Model
 from mesa.space import MultiGrid
 from mesa.time import RandomActivation
@@ -121,6 +122,7 @@ class PredatorPrey(Model):
         self.schedule = RandomActivation(self)
         self.grid = Environment(width, height)
         self.id_generator = UniqueIDGenerator()
+        self.min_num_agents = {}
         self._steps = 0
         self._time = 0
         self.dc = DataCollector(agent_reporters={
@@ -129,11 +131,12 @@ class PredatorPrey(Model):
                 "AgentType": lambda a: a.__class__.__name__
             }
         )
+        self.running = True
 
     def set_init_agent(self, AgentClass, num_agents):
         for _ in range(num_agents):
             self.create_agent(AgentClass)
-    
+
     def create_agent(self, AgentClass, pos=None):
         agent_id = self.id_generator.get_next_id(AgentClass)
         if pos == None:
@@ -145,35 +148,21 @@ class PredatorPrey(Model):
         self.schedule.add(agent)
         return agent
     
-    def plot_agent_movement(self):
-        history_df = self.dc.get_agent_vars_dataframe()
+    def set_min_num_agent(self, AgentClass, min_num_agents):
+        self.min_num_agents[AgentClass] = min_num_agents
 
-        # When specific categorical values does not exist in step (e.g. Rabbit agent does not exist),
-        # px.scatter behaves strangely (Data points remains on the plot)
-        # So we need to add dummy values outside of the drawing range
-        rabbit_df = pd.DataFrame(
-            {"Step": np.arange(0,STEPS+1), "AgentID": ["Rabbit"]*(STEPS+1), "x": [-1]*(STEPS+1), "y": [-1]*(STEPS+1), "AgentType": ["Rabbit"]*(STEPS+1)}
-        ).set_index(["Step", "AgentID"])
-        fox_df = pd.DataFrame(
-            {"Step": np.arange(0,STEPS+1), "AgentID": ["Fox"]*(STEPS+1), "x": [-1]*(STEPS+1), "y": [-1]*(STEPS+1), "AgentType": ["Fox"]*(STEPS+1)}
-        ).set_index(["Step", "AgentID"])
-        history_df = pd.concat([history_df, rabbit_df, fox_df])
+    def set_max_agent_num(self, max_agent_num):
+        self.max_agent_num = max_agent_num
+    
+    def avoid_extinction(self):
+        agent_counts = Counter(agent.__class__ for agent in self.schedule.agents)
+        for AgentClass in self.min_num_agents.keys():
+            if agent_counts[AgentClass] < self.min_num_agents[AgentClass]:
+                self.set_init_agent(AgentClass, self.min_num_agents[AgentClass] - agent_counts[AgentClass])
 
-        fig = px.scatter(history_df.reset_index(),
-            x="x", y="y", animation_frame="Step",
-            color="AgentType", hover_name="AgentID", animation_group="AgentID",
-            range_x=[0,self.grid.width-1], range_y=[0,self.grid.height-1],
-            title="Predator-Prey", width=600, height=600
-        )
-        fig.update_layout(
-            xaxis=dict(
-                dtick=1,
-            ),
-            yaxis=dict(
-                dtick=1,
-            )
-        )
-        return fig
+    def avoid_too_many_agents(self):
+        if self.schedule.get_agent_count() > self.max_agent_num:
+            self.running = False
 
     def plot_agent_population(self):
         history_df = self.dc.get_agent_vars_dataframe()
@@ -190,33 +179,76 @@ class PredatorPrey(Model):
         )
         return fig
 
+    def plot_agent_movement(self):
+        history_df = self.dc.get_agent_vars_dataframe()
+
+        # When specific categorical values does not exist in step (e.g. Rabbit agent does not exist),
+        # px.scatter behaves strangely (Data points remains on the plot)
+        # So we need to add dummy values outside of the drawing range
+        rabbit_df = pd.DataFrame(
+            {"Step": np.arange(0,STEPS+1), "AgentID": ["Rabbit"]*(STEPS+1), "x": [-1]*(STEPS+1), "y": [-1]*(STEPS+1), "AgentType": ["Rabbit"]*(STEPS+1)}
+        ).set_index(["Step", "AgentID"])
+        fox_df = pd.DataFrame(
+            {"Step": np.arange(0,STEPS+1), "AgentID": ["Fox"]*(STEPS+1), "x": [-1]*(STEPS+1), "y": [-1]*(STEPS+1), "AgentType": ["Fox"]*(STEPS+1)}
+        ).set_index(["Step", "AgentID"])
+        history_df = pd.concat([history_df, rabbit_df, fox_df])
+
+        # with st.spinner('Wait for it...'):
+        fig = px.scatter(history_df.reset_index(),
+            x="x", y="y", animation_frame="Step",
+            color="AgentType", hover_name="AgentID", animation_group="AgentID",
+            range_x=[0,self.grid.width-1], range_y=[0,self.grid.height-1],
+            title="Predator-Prey", width=600, height=600
+        )
+        fig.update_layout(
+            xaxis=dict(
+                dtick=1,
+            ),
+            yaxis=dict(
+                dtick=1,
+            )
+        )
+        return fig
+
     def step(self):
         self.schedule.step()
+        self.avoid_extinction()
+        self.avoid_too_many_agents()
         self.dc.collect(self)
 
 st.title("Predator-Prey Simulation")
 
-WIDTH = int(st.sidebar.number_input('WIDTH (int)', value=10))
-HEIGHT = int(st.sidebar.number_input('HEIGHT (int)', value=10))
-STEPS = int(st.sidebar.number_input('STEPS (int)', value=100))
-NUM_RABBITS = int(st.sidebar.number_input('NUM_RABBITS (int)', value=10))
-NUM_FOXES = int(st.sidebar.number_input('NUM_FOXES (int)', value=10))
-REPRODUCE_RATIO_RABBITS = float(st.sidebar.number_input('REPRODUCE_RATIO_RABBITS (float)', value=0.1))
-REPRODUCE_RATIO_FOXES = float(st.sidebar.number_input('REPRODUCE_RATIO_FOXES (float)', value=0.05))
+WIDTH = int(st.sidebar.number_input('WIDTH (int)', value=20))
+HEIGHT = int(st.sidebar.number_input('HEIGHT (int)', value=20))
+STEPS = int(st.sidebar.number_input('STEPS (int)', value=10000))
+NUM_RABBITS = int(st.sidebar.number_input('NUM_RABBITS (int)', value=100))
+NUM_FOXES = int(st.sidebar.number_input('NUM_FOXES (int)', value=100))
+REPRODUCE_RATIO_RABBITS = float(st.sidebar.number_input('REPRODUCE_RATIO_RABBITS (float)', value=0.02))
+REPRODUCE_RATIO_FOXES = float(st.sidebar.number_input('REPRODUCE_RATIO_FOXES (float)', value=0.02))
 ENERGY_INIT_FOXES = int(st.sidebar.number_input('ENERGY_INIT_FOXES (int)', value=10))
 ENERGY_DECREASE_FOXES = int(st.sidebar.number_input('ENERGY_DECREASE_FOXES (int)', value=1))
 ENERGY_RECOVER_FOXES = int(st.sidebar.number_input('ENERGY_RECOVER_FOXES (int)', value=10))
 RANDOM_SEED = int(st.sidebar.number_input('RANDOM_SEED (int)', value=1))
+MIN_NUM_RABBITS = int(st.sidebar.number_input('MIN_NUM_RABBITS (int)', value=5))
+MIN_NUM_FOXES = int(st.sidebar.number_input('MIN_NUM_FOXES (int)', value=5))
+MAX_AGENT_NUM = int(st.sidebar.number_input('MAX_AGENT_NUM (int)', value=2000))
 
 random.seed(RANDOM_SEED)
 
 model = PredatorPrey(WIDTH, HEIGHT)
 model.set_init_agent(Rabbit, NUM_RABBITS)
 model.set_init_agent(Fox, NUM_FOXES)
+model.set_min_num_agent(Rabbit, MIN_NUM_RABBITS)
+model.set_min_num_agent(Fox, MIN_NUM_FOXES)
+model.set_max_agent_num(MAX_AGENT_NUM)
 model.dc.collect(model)
 
 for i in range(STEPS):
-    model.step()
+    if model.running:
+        model.step()
 
-st.plotly_chart(model.plot_agent_movement(), use_container_width=True, theme=None)
-st.plotly_chart(model.plot_agent_population(), use_container_width=True, theme=None)
+with st.spinner('Wait for it...'):
+    st.plotly_chart(model.plot_agent_population(), use_container_width=True, theme=None)
+
+with st.spinner('Wait for it...'):
+    st.plotly_chart(model.plot_agent_movement(), use_container_width=True, theme=None)
