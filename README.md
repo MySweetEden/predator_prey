@@ -9,9 +9,9 @@ This project is a Python-based multi-agent simulation of predator-prey dynamics,
 ## Sneak Peek
 Get a glimpse of what awaits you in the simulation with movie and screenshot:
 
-https://github.com/MySweetEden/predator_prey/assets/58873594/a82dbecc-87be-43bf-b49f-516688410201
+![Population_transition_graph](https://github.com/MySweetEden/predator_prey/assets/58873594/d74d7e44-8a68-4154-8da5-9ba049ea536e)
 
-![Population_transition_graph](https://github.com/MySweetEden/predator_prey/assets/58873594/0d4a8b8c-b671-4659-9a14-e13780bbf128)
+![PredatorPrey](https://github.com/MySweetEden/predator_prey/assets/58873594/a03afe72-5d33-41ba-9244-dfc615d2a01e)
 
 ## Key Features
 Agent-Based Modeling: Leverages the Mesa library to create complex predator-prey interactions within a simulated ecosystem.  
